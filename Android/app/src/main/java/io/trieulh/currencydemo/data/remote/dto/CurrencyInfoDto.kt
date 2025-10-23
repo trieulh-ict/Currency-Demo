@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.remote.dto
 
 import io.trieulh.currencydemo.domain.model.CurrencyInfo

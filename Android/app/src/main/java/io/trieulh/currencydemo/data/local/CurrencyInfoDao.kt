@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.local
 
 import androidx.room.Dao
@@ -16,6 +15,12 @@ interface CurrencyInfoDao {
 
     @Query("SELECT * FROM currencies")
     fun getCurrencies(): Flow<List<CurrencyInfoEntity>>
+
+    @Query("SELECT * FROM currencies WHERE code IS NOT NULL")
+    fun getFiatCurrencies(): Flow<List<CurrencyInfoEntity>>
+
+    @Query("SELECT * FROM currencies WHERE code IS NULL")
+    fun getCryptoCurrencies(): Flow<List<CurrencyInfoEntity>>
 
     @Query("DELETE FROM currencies")
     suspend fun clearCurrencies()

@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.util
 
 sealed class Resource<T>(val data: T? = null, val message: String? = null) {

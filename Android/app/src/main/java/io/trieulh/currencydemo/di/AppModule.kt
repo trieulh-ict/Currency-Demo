@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.di
 
 import android.content.Context
@@ -10,6 +9,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.trieulh.currencydemo.data.local.CurrencyDatabase
 import io.trieulh.currencydemo.data.remote.CurrencyApi
+import io.trieulh.currencydemo.data.util.DefaultDispatcherProvider
+import io.trieulh.currencydemo.domain.util.DispatcherProvider
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -26,15 +27,10 @@ object AppModule {
     fun provideRetrofit(): Retrofit {
         val logging = HttpLoggingInterceptor()
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
-        val client = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .build()
+        val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
-        return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:3000/")
-            .client(client)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .build()
+        return Retrofit.Builder().baseUrl("http://10.0.2.2:3000/").client(client)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType())).build()
     }
 
     @Provides
@@ -53,4 +49,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCurrencyDao(database: CurrencyDatabase) = database.currencyDao()
+
+
+    @Provides
+    @Singleton
+    fun provideDispatcherProvider(): DispatcherProvider {
+        return DefaultDispatcherProvider()
+    }
 }

@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.local.entity
 
 import androidx.room.Entity

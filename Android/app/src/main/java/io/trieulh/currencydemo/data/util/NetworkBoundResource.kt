@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.util
 
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +9,6 @@ import kotlinx.coroutines.flow.map
 abstract class NetworkBoundResource<ResultType, RequestType> {
 
     fun asFlow(): Flow<Resource<ResultType>> = flow {
-        emit(Resource.Loading())
         val dbData = loadFromDb().first()
 
         if (shouldFetch(dbData)) {
@@ -22,7 +20,12 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                 emitAll(loadFromDb().map { Resource.Success(it) })
             } catch (throwable: Throwable) {
                 onFetchFailed(throwable)
-                emitAll(loadFromDb().map { Resource.Error(throwable.message ?: "Unknown error", it) })
+                emitAll(loadFromDb().map {
+                    Resource.Error(
+                        throwable.message ?: "Unknown error",
+                        it
+                    )
+                })
             }
         } else {
             emitAll(loadFromDb().map { Resource.Success(it) })

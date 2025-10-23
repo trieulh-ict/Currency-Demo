@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.trieulh.currencydemo.data.local.entity.CurrencyInfoEntity
 import io.trieulh.currencydemo.BuildConfig
+import io.trieulh.currencydemo.data.local.entity.CurrencyInfoEntity
 import net.sqlcipher.database.SupportFactory
 
 @Database(entities = [CurrencyInfoEntity::class], version = 2)
