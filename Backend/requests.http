@@ -1,0 +1,9 @@
+
+### Get all currencies
+GET http://localhost:3000/currencies
+
+### Get crypto currencies
+GET http://localhost:3000/currencies?type=crypto
+
+### Get fiat currencies
+GET http://localhost:3000/currencies?type=fiat

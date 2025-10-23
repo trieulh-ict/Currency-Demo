@@ -1,0 +1,22 @@
+# Android specific ignores
+/Android/.gradle
+/Android/local.properties
+/Android/build
+/Android/app/build
+/Android/.idea
+/Android/*.iml
+/Android/.DS_Store
+/Android/captures
+/Android/.externalNativeBuild
+/Android/.cxx
+
+# Backend specific ignores
+/Backend/node_modules
+/Backend/dist
+/Backend/package-lock.json
+/Backend/.env
+
+# General ignores
+*.pdf
+*.lock
+*.local
