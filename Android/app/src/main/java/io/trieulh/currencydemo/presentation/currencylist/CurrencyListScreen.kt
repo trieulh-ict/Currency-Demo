@@ -14,9 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,17 +29,36 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import io.trieulh.currencydemo.R
 import io.trieulh.currencydemo.domain.model.CurrencyType
 import io.trieulh.currencydemo.presentation.currencylist.components.CurrencyListItem
+import io.trieulh.currencydemo.presentation.navigation.Screen
 
 @Composable
 fun CurrencyListScreen(
-    modifier: Modifier = Modifier, viewModel: CurrencyListViewModel = hiltViewModel()
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    viewModel: CurrencyListViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
 
     Column(modifier = modifier.fillMaxSize()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier.padding(start = 16.dp)
+            )
+            IconButton(onClick = { navController.navigate(Screen.SearchScreen.route) }) {
+                Icon(Icons.Default.Search, contentDescription = "Search")
+            }
+        }
+
         Box(modifier = Modifier.weight(1f)) {
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))

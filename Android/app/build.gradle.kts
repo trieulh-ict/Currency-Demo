@@ -88,6 +88,7 @@ dependencies {
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.compose.material.icons.extended)
+    implementation(libs.androidx.navigation.compose)
 
     // Testing
     testImplementation(libs.junit)
