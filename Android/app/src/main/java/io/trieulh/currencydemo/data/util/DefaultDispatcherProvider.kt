@@ -1,4 +1,3 @@
-
 package io.trieulh.currencydemo.data.util
 
 import io.trieulh.currencydemo.domain.util.DispatcherProvider

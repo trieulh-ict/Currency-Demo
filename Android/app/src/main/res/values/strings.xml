@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Currency Demo</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_insert">Insert</string>
+    <string name="button_crypto">Crypto</string>
+    <string name="button_fiat">Fiat</string>
+    <string name="button_all">All</string>
+    <string name="no_results_message">No Results, click Insert to fetch the data</string>
 </resources>
