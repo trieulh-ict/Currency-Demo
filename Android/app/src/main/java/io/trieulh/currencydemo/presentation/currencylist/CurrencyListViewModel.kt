@@ -9,6 +9,7 @@ import io.trieulh.currencydemo.domain.usecase.GetAllCurrenciesUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -20,11 +21,11 @@ class CurrencyListViewModel @Inject constructor(
     private val getAllCurrenciesUseCase: GetAllCurrenciesUseCase
 ) : ViewModel(), CurrencyListContract {
 
-    private val _state = MutableStateFlow(CurrencyListContract.State())
-    val state = _state.asStateFlow()
+    private val _uiState = MutableStateFlow(CurrencyListContract.State())
+    override val uiState: StateFlow<CurrencyListContract.State> = _uiState.asStateFlow()
 
     private val _effect = MutableSharedFlow<CurrencyListContract.Effect>()
-    val effect = _effect.asSharedFlow()
+    override val effect = _effect.asSharedFlow()
 
     private var getCurrenciesJob: Job? = null
 
@@ -32,7 +33,7 @@ class CurrencyListViewModel @Inject constructor(
         onEvent(CurrencyListContract.Event.OnCreate)
     }
 
-    fun onEvent(event: CurrencyListContract.Event) {
+    override fun onEvent(event: CurrencyListContract.Event) {
         when (event) {
             CurrencyListContract.Event.OnCreate -> {
                 getAllCurrencies(forceFetch = true)
@@ -51,6 +52,12 @@ class CurrencyListViewModel @Inject constructor(
             is CurrencyListContract.Event.OnLoadCurrencies -> {
                 getAllCurrencies(event.type, event.forceFetch)
             }
+
+            CurrencyListContract.Event.OnSearchClick -> {
+                viewModelScope.launch {
+                    _effect.emit(CurrencyListContract.Effect.NavigateToSearch)
+                }
+            }
         }
     }
 
@@ -63,7 +70,7 @@ class CurrencyListViewModel @Inject constructor(
             getAllCurrenciesUseCase(type, forceFetch).collect { result ->
                 when (result) {
                     is Resource.Success -> {
-                        _state.update {
+                        _uiState.update {
                             it.copy(
                                 currencies = result.data ?: emptyList(),
                                 isLoading = false
@@ -72,7 +79,7 @@ class CurrencyListViewModel @Inject constructor(
                     }
 
                     is Resource.Error -> {
-                        _state.update { it.copy(isLoading = false) }
+                        _uiState.update { it.copy(isLoading = false) }
                         _effect.emit(
                             CurrencyListContract.Effect.ShowError(
                                 result.message ?: "Unknown error"
@@ -81,7 +88,7 @@ class CurrencyListViewModel @Inject constructor(
                     }
 
                     is Resource.Loading -> {
-                        _state.update { it.copy(isLoading = true) }
+                        _uiState.update { it.copy(isLoading = true) }
                     }
                 }
             }

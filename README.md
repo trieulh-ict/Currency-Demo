@@ -71,8 +71,29 @@ curl http://localhost:3000/currencies
 curl http://localhost:3000/currencies?type=crypto
 ```
 
-**Get fiat currencies:**
+#### Get fiat currencies
 
 ```bash
 curl http://localhost:3000/currencies?type=fiat
+```
+
+#### Search Currencies
+
+Returns a list of currencies matching the search keyword.
+
+-   **URL:** `http://localhost:3000/currencies/search`
+-   **Method:** `POST`
+-   **Request Body:**
+    ```json
+    {
+      "keyword": "string"
+    }
+    ```
+
+##### Examples
+
+**Search for currencies with keyword 'eth':**
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"keyword": "eth"}' http://localhost:3000/currencies/search
 ```

@@ -1,9 +1,20 @@
 <resources>
     <string name="app_name">Currency Demo</string>
+    <string name="currency_list_title">Currency List</string>
+    <string name="search_title">Search</string>
+    <string name="no_currencies_found">No currencies found</string>
+    <string name="error_message">Error: %s</string>
+    <string name="right_arrow_content_description">Right Arrow</string>
+    <string name="search_currencies_placeholder">Search currencies</string>
+    <string name="clear_search_content_description">Clear Search</string>
+    <string name="back_content_description">Back</string>
+    <string name="loading_message">Loading…</string>
+    <string name="try_btc_message">Try "BTC"</string>
     <string name="button_clear">Clear</string>
     <string name="button_insert">Insert</string>
     <string name="button_crypto">Crypto</string>
     <string name="button_fiat">Fiat</string>
     <string name="button_all">All</string>
-    <string name="no_results_message">No Results, click Insert to fetch the data</string>
+    <string name="message_no_results_full">No Results, click Insert to fetch the data</string>
+    <string name="message_no_results">No Results</string>
 </resources>

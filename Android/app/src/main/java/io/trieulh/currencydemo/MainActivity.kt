@@ -12,8 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import io.trieulh.currencydemo.navigation.Screen
 import io.trieulh.currencydemo.presentation.currencylist.CurrencyListScreen
-import io.trieulh.currencydemo.presentation.navigation.Screen
 import io.trieulh.currencydemo.presentation.search.SearchScreen
 import io.trieulh.currencydemo.ui.theme.CurrencyDemoTheme
 
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
                             CurrencyListScreen(navController = navController)
                         }
                         composable(Screen.SearchScreen.route) {
-                            SearchScreen()
+                            SearchScreen(navController = navController)
                         }
                     }
                 }

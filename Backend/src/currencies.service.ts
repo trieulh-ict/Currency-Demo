@@ -129,4 +129,20 @@ export class CurrenciesService {
     }
     return [...this.cryptoCurrencies, ...this.fiatCurrencies];
   }
+
+  search(keyword: string) {
+    const allCurrencies = [...this.cryptoCurrencies, ...this.fiatCurrencies];
+    const lowerCaseKeyword = keyword.toLowerCase();
+
+    return allCurrencies.filter((currency) => {
+      // Coin's name starts with the search term
+      return (
+        currency.name.toLowerCase().startsWith(lowerCaseKeyword) ||
+        // Coin's name contains a partial match with a '' (space) prefixed to the search term
+        currency.name.toLowerCase().includes(` ${lowerCaseKeyword}`) ||
+        // Coin's symbol starts with the search term
+        currency.symbol.toLowerCase().startsWith(lowerCaseKeyword)
+      );
+    });
+  }
 }

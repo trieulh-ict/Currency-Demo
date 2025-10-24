@@ -1,4 +1,3 @@
-
 ### Get all currencies
 GET http://localhost:3000/currencies
 
@@ -7,3 +6,11 @@ GET http://localhost:3000/currencies?type=crypto
 
 ### Get fiat currencies
 GET http://localhost:3000/currencies?type=fiat
+
+### Search currencies by keyword
+POST http://localhost:3000/currencies/search
+Content-Type: application/json
+
+{
+  "keyword": "eth"
+}

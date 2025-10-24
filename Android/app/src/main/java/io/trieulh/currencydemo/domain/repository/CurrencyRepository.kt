@@ -15,4 +15,6 @@ interface CurrencyRepository {
     suspend fun clearCurrencies()
 
     suspend fun insertCurrencies(currencies: List<CurrencyInfo>)
+
+    fun searchCurrencies(keyword: String): Flow<Resource<List<CurrencyInfo>>>
 }

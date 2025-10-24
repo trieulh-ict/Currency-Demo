@@ -19,11 +19,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import io.trieulh.currencydemo.R
 import io.trieulh.currencydemo.domain.model.CurrencyInfo
 
 @Composable
-fun CurrencyListItem(currency: CurrencyInfo) {
+fun CurrencyListItem(currency: CurrencyInfo, searchQuery: String = "") {
     Column {
         Row(
             modifier = Modifier
@@ -46,7 +52,18 @@ fun CurrencyListItem(currency: CurrencyInfo) {
 
             Spacer(modifier = Modifier.padding(horizontal = 8.dp))
 
-            Text(text = currency.name)
+            Text(buildAnnotatedString {
+                val startIndex = currency.name.indexOf(searchQuery, ignoreCase = true)
+                if (searchQuery.isNotEmpty() && startIndex != -1) {
+                    append(currency.name.substring(0, startIndex))
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(currency.name.substring(startIndex, startIndex + searchQuery.length))
+                    }
+                    append(currency.name.substring(startIndex + searchQuery.length))
+                } else {
+                    append(currency.name)
+                }
+            })
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -56,7 +73,7 @@ fun CurrencyListItem(currency: CurrencyInfo) {
                     Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ArrowForwardIos,
-                        contentDescription = "Right Arrow",
+                        contentDescription = stringResource(id = R.string.right_arrow_content_description),
                         modifier = Modifier.size(16.dp)
                     )
                 }
