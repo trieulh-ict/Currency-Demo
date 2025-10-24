@@ -2,6 +2,20 @@
 
 This repository contains an Android mobile app and a NestJS backend API for demonstrating a currency list.
 
+## Table of Contents
+
+- [Currency Demo](#currency-demo)
+  - [Android App](#android-app)
+    - [Setup](#setup)
+    - [Running the app](#running-the-app)
+  - [Backend (NestJS API)](#backend-nestjs-api)
+    - [Installation](#installation)
+    - [Running the app](#running-the-app-1)
+    - [API Endpoints](#api-endpoints)
+      - [Get Currencies](#get-currencies)
+      - [Search Currencies](#search-currencies)
+  - [Screenshots](#screenshots)
+
 ## Android App
 
 This is an Android mobile application built with Jetpack Compose, Hilt, Encrypted Room, Retrofit, OkHttp, Flow, Coroutines, and Kotlin Serialization.
@@ -17,8 +31,8 @@ This is an Android mobile application built with Jetpack Compose, Hilt, Encrypte
 
     **Important:** Replace `your_secret_passphrase_here` with a strong, unique passphrase. This file is ignored by Git and should not be committed to version control.
 
-2.  **Run the Backend API:**
-    Ensure the NestJS backend API is running on `http://localhost:3000` as described in the "Backend (NestJS API)" section below.
+2.  **Run the Backend API (Optional):**
+    The application is using a remote API service `https://currency-demo-production.up.railway.app/`. In case you wish to run the backend locally, ensure the NestJS backend API is running as the guide below.
 
 ### Running the app
 
@@ -34,6 +48,8 @@ Open the `Android` project in Android Studio and run it on an **Android Emulator
 ```
 
 Running on a physical device would require additional network configuration for the local backend.
+
+Note that `http://10.0.2.2:3000/` is the URL to connect to your laptop's `localhost:3000` from an **Android emulator**. If you want to run on a real mobile device, it is recommended to use the predefined Remote API service.
 
 ## Backend (NestJS API)
 
@@ -108,3 +124,9 @@ Returns a list of currencies matching the search keyword.
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"keyword": "eth"}' http://localhost:3000/currencies/search
 ```
+
+## Screenshots
+
+| List Display | List Empty | Search Init | Search Not Found | Search Success |
+| :---: | :---: | :---: | :---: | :---: |
+| ![Screen_List_Display](Resources/Screen_List_Display.png) | ![Screen_List_Empty](Resources/Screen_List_Empty.png) | ![Screen_Search_Init](Resources/Screen_Search_Init.png) | ![Screen_Search_Not_Found](Resources/Screen_Search_Not_Found.png) | ![Screen_Search_Success](Resources/Screen_Search_Success.png) |
