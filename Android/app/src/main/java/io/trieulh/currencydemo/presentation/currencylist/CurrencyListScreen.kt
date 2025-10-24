@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,7 +93,11 @@ fun CurrencyListContent(
 
         Box(modifier = Modifier.weight(1f)) {
             if (state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .testTag("loadingIndicator")
+                )
             } else if (state.currencies.isEmpty()) {
                 Column(
                     modifier = Modifier
@@ -103,7 +108,9 @@ fun CurrencyListContent(
                     Icon(
                         imageVector = Icons.Default.Info,
                         contentDescription = stringResource(id = R.string.message_no_results_full),
-                        modifier = Modifier.size(48.dp)
+                        modifier = Modifier
+                            .size(48.dp)
+                            .testTag("infoIcon")
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(

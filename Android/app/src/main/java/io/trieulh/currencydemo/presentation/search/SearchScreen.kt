@@ -26,10 +26,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -75,6 +79,12 @@ fun SearchContent(
     state: SearchContract.State,
     onEvent: (SearchContract.Event) -> Unit,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(windowInsets = WindowInsets(0.dp), title = {
@@ -83,7 +93,10 @@ fun SearchContent(
                     onValueChange = {
                         onEvent(SearchContract.Event.OnSearchQueryChange(it))
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("search_query")
+                        .focusRequester(focusRequester),
                     placeholder = { Text(stringResource(id = R.string.search_currencies_placeholder)) },
                     singleLine = true,
                     trailingIcon = {
@@ -150,12 +163,10 @@ fun SearchContent(
 fun SearchPreview() {
     val sampleState = SearchContract.State(
         searchQuery = "bitcoin", isLoading = false, searchResults = listOf(
-            // Assuming a sample currency item, replace with actual sample data if available
             CurrencyInfo(
                 id = "btc",
                 name = "Bitcoin",
                 symbol = "BTC",
-                // other properties with sample values as needed
             ), CurrencyInfo(
                 id = "eth",
                 name = "Ethereum",

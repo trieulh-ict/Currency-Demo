@@ -24,6 +24,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.trieulh.currencydemo.R
 import io.trieulh.currencydemo.domain.model.CurrencyInfo
@@ -44,7 +45,7 @@ fun CurrencyListItem(currency: CurrencyInfo, searchQuery: String = "") {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = currency.name.first().toString(),
+                    text = currency.name.firstOrNull()?.toString().orEmpty(),
                     color = Color.White,
                     style = MaterialTheme.typography.titleMedium
                 )
@@ -80,5 +81,25 @@ fun CurrencyListItem(currency: CurrencyInfo, searchQuery: String = "") {
             }
         }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CurrencyListItemPreview() {
+    MaterialTheme {
+        Column(modifier = Modifier.padding(8.dp)) {
+            CurrencyListItem(
+                currency = CurrencyInfo(
+                    id = "1", name = "Bitcoin", symbol = "BTC", code = null
+                ), searchQuery = ""
+            )
+
+            CurrencyListItem(
+                currency = CurrencyInfo(
+                    id = "2", name = "Ethereum", symbol = "ETH", code = null
+                ), searchQuery = "e"
+            )
+        }
     }
 }

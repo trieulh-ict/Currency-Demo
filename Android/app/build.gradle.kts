@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.paparazzi)
     id("com.google.devtools.ksp")
 }
 
@@ -51,6 +50,11 @@ android {
         compose = true
         buildConfig = true
     }
+
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+        unitTests.isReturnDefaultValues = false
+    }
 }
 
 dependencies {
@@ -91,7 +95,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // Testing
-    testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -100,7 +105,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     testImplementation(libs.turbine)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.paparazzi)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotlin.test.junit)
 }

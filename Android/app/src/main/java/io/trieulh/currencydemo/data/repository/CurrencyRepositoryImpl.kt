@@ -54,10 +54,10 @@ class CurrencyRepositoryImpl @Inject constructor(
             override suspend fun saveNetworkResult(item: List<CurrencyInfoDto>) {
                 dao.insertCurrencies(item.map { it.toDomain().toEntity() })
             }
-        }.asFlow()
+        }.asFlow().flowOn(dispatcherProvider.IO)
     }
 
-    override suspend fun clearCurrencies() {
+    override suspend fun clearCurrencies() = withContext(dispatcherProvider.IO) {
         dao.clearCurrencies()
     }
 

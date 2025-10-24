@@ -2,7 +2,6 @@
 agp = "8.13.0"
 kotlin = "2.2.20"
 coreKtx = "1.17.0"
-junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.9.4"
@@ -16,18 +15,17 @@ room = "2.8.3"
 sqlcipher = "4.5.4"
 androidxSqlite = "2.6.1"
 turbine = "1.2.1"
-mockito = "5.20.0"
-mockitoKotlin = "6.1.0"
-paparazzi = "1.3.5"
+mockk = "1.14.6"
+kotlinTest = "2.2.20"
 kotlinxSerialization = "1.9.0"
 kotlinxSerializationConverter = "1.0.0"
-paparazziPlugin = "1.3.5"
 materialIcons = "1.7.8"
 navigationCompose = "2.9.5"
+uiTestJunit4 = "1.9.4"
+robolectric = "4.16"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -56,17 +54,19 @@ androidx-sqlite-framework = { group = "androidx.sqlite", name = "sqlite-framewor
 androidx-sqlite-ktx = { group = "androidx.sqlite", name = "sqlite-ktx", version.ref = "androidxSqlite" }
 sqlcipher = { group = "net.zetetic", name = "android-database-sqlcipher", version.ref = "sqlcipher" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi", version.ref = "paparazzi" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
+kotlin-test-junit = { group = "org.jetbrains.kotlin", name = "kotlin-test-junit", version.ref = "kotlinTest" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIcons" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazziPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

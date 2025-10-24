@@ -74,13 +74,14 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchCurrencies(keyword: String) {
-        if (keyword.isBlank()) {
+        val trimmedKeyword = keyword.trim()
+        if (trimmedKeyword.isBlank()) {
             _uiState.update { it.copy(searchResults = null) }
             return
         }
 
         viewModelScope.launch(dispatchers.IO) {
-            searchCurrenciesUseCase(keyword).collect {
+            searchCurrenciesUseCase(trimmedKeyword).collect {
                 when (it) {
                     is Resource.Success -> {
                         _uiState.update { state ->

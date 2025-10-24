@@ -1,17 +1,20 @@
 package io.trieulh.currencydemo.di
 
 import android.content.Context
+import androidx.room.Room
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.trieulh.currencydemo.BuildConfig
 import io.trieulh.currencydemo.data.local.CurrencyDatabase
 import io.trieulh.currencydemo.data.remote.CurrencyApi
 import io.trieulh.currencydemo.data.util.DefaultDispatcherProvider
 import io.trieulh.currencydemo.domain.util.DispatcherProvider
 import kotlinx.serialization.json.Json
+import net.sqlcipher.database.SupportFactory
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,8 +45,15 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCurrencyDatabase(@ApplicationContext context: Context): CurrencyDatabase {
-        val passphrase = CurrencyDatabase.generatePassphrase(context)
-        return CurrencyDatabase.getInstance(context, passphrase)
+        val passphrase = BuildConfig.SQLCIPHER_PASSPHRASE.toByteArray()
+        val factory = SupportFactory(passphrase)
+        return Room.databaseBuilder(
+            context.applicationContext,
+            CurrencyDatabase::class.java, "currency.db"
+        )
+            .openHelperFactory(factory)
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
 
     @Provides
