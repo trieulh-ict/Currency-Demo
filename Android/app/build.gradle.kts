@@ -29,6 +29,18 @@ android {
             "SQLCIPHER_PASSPHRASE",
             "\"${properties.getProperty("sqlcipher.passphrase")}\""
         )
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"https://currency-demo-production.up.railway.app/\""
+        )
+
+        // In case you want to run /Backend project in local
+//        buildConfigField(
+//            "String",
+//            "BASE_URL",
+//            "\"http://10.0.2.2:3000/\""
+//        )
     }
 
     buildTypes {

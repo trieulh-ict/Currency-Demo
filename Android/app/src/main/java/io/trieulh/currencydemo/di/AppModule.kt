@@ -32,7 +32,7 @@ object AppModule {
         logging.setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder().addInterceptor(logging).build()
 
-        return Retrofit.Builder().baseUrl("http://10.0.2.2:3000/").client(client)
+        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(client)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType())).build()
     }
 

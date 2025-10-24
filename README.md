@@ -1,4 +1,4 @@
-# CryptoDotComAssignment
+# Currency Demo
 
 This repository contains an Android mobile app and a NestJS backend API for demonstrating a currency list.
 
@@ -22,7 +22,18 @@ This is an Android mobile application built with Jetpack Compose, Hilt, Encrypte
 
 ### Running the app
 
-Open the `Android` project in Android Studio and run it on an **Android Emulator**. The app is configured to connect to the local backend API running on your host machine via the emulator's special alias `10.0.2.2`. Running on a physical device would require additional network configuration.
+Open the `Android` project in Android Studio and run it on an **Android Emulator**. The app is configured to connect to a remote backend API by default. If you wish to run the backend locally, uncomment the local `BASE_URL` in `Android/app/build.gradle.kts` and comment out the remote one.
+
+```kotlin
+        // In case you want to run /Backend project in local
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            "\"http://10.0.2.2:3000/\""
+        )
+```
+
+Running on a physical device would require additional network configuration for the local backend.
 
 ## Backend (NestJS API)
 

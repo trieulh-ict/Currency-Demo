@@ -71,8 +71,7 @@ class SearchScreenKtTest {
             )
         }
 
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.loading_message))
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("loadingIndicator").assertIsDisplayed()
 
         // No results or placeholder visible
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.message_no_results))
@@ -374,13 +373,11 @@ class SearchScreenKtTest {
         }
 
         // Initially loading message shown
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.loading_message))
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("loadingIndicator").assertIsDisplayed()
 
         // Transition to results
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.loading_message))
-            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("loadingIndicator").assertIsDisplayed()
     }
 
     @Test
