@@ -1,8 +1,15 @@
 import { Injectable } from '@nestjs/common';
 
+type Currency = {
+  id: string;
+  name: string;
+  symbol: string;
+  code?: string;
+};
+
 @Injectable()
 export class CurrenciesService {
-  private readonly cryptoCurrencies = [
+  private readonly cryptoCurrencies: Currency[] = [
     {
       id: 'BTC',
       name: 'Bitcoin',
@@ -75,7 +82,7 @@ export class CurrenciesService {
     },
   ];
 
-  private readonly fiatCurrencies = [
+  private readonly fiatCurrencies: Currency[] = [
     {
       id: 'SGD',
       name: 'Singapore Dollar',
@@ -131,15 +138,19 @@ export class CurrenciesService {
   }
 
   search(keyword: string) {
-    const allCurrencies = [...this.cryptoCurrencies, ...this.fiatCurrencies];
+    const allCurrencies: Currency[] = [
+      ...this.cryptoCurrencies,
+      ...this.fiatCurrencies,
+    ];
     const lowerCaseKeyword = keyword.toLowerCase();
 
     return allCurrencies.filter((currency) => {
       // Coin's name starts with the search term
       return (
-        currency.name.toLowerCase().startsWith(lowerCaseKeyword) ||
-        // Coin's name contains a partial match with a '' (space) prefixed to the search term
-        currency.name.toLowerCase().includes(` ${lowerCaseKeyword}`) ||
+        currency.name
+          .toLowerCase()
+          .split(' ')
+          .some((word) => word.startsWith(lowerCaseKeyword)) ||
         // Coin's symbol starts with the search term
         currency.symbol.toLowerCase().startsWith(lowerCaseKeyword)
       );

@@ -24,10 +24,14 @@ android {
 
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").inputStream())
+        // This is for testing only. Do not give default passphrase in production
+        val sqlCipherPassphrase =
+            properties.getProperty("sqlcipher.passphrase")?.takeIf { it.isNotBlank() }
+                ?: "default_passphrase"
         buildConfigField(
             "String",
             "SQLCIPHER_PASSPHRASE",
-            "\"${properties.getProperty("sqlcipher.passphrase")}\""
+            "\"${sqlCipherPassphrase}\""
         )
         buildConfigField(
             "String",

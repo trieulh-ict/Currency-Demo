@@ -97,8 +97,7 @@ class CurrencyRepositoryImpl @Inject constructor(
 
         val lowerCaseQuery = query.lowercase()
         return currencies.filter {
-            it.name.lowercase().startsWith(lowerCaseQuery) ||
-                    it.name.lowercase().contains(" $lowerCaseQuery") ||
+            it.name.lowercase().split(" ").any { word -> word.startsWith(lowerCaseQuery) } ||
                     it.symbol.lowercase().startsWith(lowerCaseQuery)
         }
     }
