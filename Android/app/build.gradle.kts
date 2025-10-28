@@ -1,3 +1,4 @@
+import java.util.Locale
 import java.util.Properties
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
     id("com.google.devtools.ksp")
+    id("jacoco")
 }
 
 android {
@@ -48,6 +50,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -70,6 +76,11 @@ android {
     testOptions {
         unitTests.isIncludeAndroidResources = true
         unitTests.isReturnDefaultValues = false
+        unitTests.all {
+            testCoverage {
+                version = "0.8.11"
+            }
+        }
     }
 }
 

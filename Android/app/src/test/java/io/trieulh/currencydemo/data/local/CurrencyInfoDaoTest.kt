@@ -3,6 +3,7 @@ package io.trieulh.currencydemo.data.local
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
 import io.trieulh.currencydemo.data.local.entity.CurrencyInfoEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -14,11 +15,10 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-@RunWith(RobolectricTestRunner::class)
+@RunWith(AndroidJUnit4::class)
 class CurrencyInfoDaoTest {
 
     private lateinit var database: CurrencyDatabase

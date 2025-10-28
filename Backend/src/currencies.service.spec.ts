@@ -32,4 +32,26 @@ describe('CurrenciesService', () => {
       expect(result.length).toBe(7);
     });
   });
+
+  describe('search', () => {
+    it('matches currencies whose name starts with the keyword ignoring case', () => {
+      const result = service.search('bit');
+      expect(result.map((currency) => currency.id)).toEqual(['BTC', 'BCH']);
+    });
+
+    it('matches currencies by subsequent words in the name', () => {
+      const result = service.search('cash');
+      expect(result.map((currency) => currency.id)).toEqual(['BCH']);
+    });
+
+    it('matches currencies by symbol prefix', () => {
+      const result = service.search('usdc');
+      expect(result.map((currency) => currency.id)).toEqual(['USDC']);
+    });
+
+    it('returns an empty array when there are no matches', () => {
+      const result = service.search('zzz');
+      expect(result).toEqual([]);
+    });
+  });
 });
