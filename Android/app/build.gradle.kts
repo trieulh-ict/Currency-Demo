@@ -1,5 +1,13 @@
-import java.util.Locale
 import java.util.Properties
+import kotlin.text.Charsets
+import org.gradle.api.tasks.testing.Test
+import org.gradle.testing.jacoco.tasks.JacocoReport
+
+data class CoverageSourceInfo(
+    val relativeDir: String,
+    val baseName: String,
+    val skipCoverage: Boolean,
+)
 
 plugins {
     alias(libs.plugins.android.application)
@@ -140,4 +148,131 @@ dependencies {
     testImplementation(libs.mockk.android)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlin.test.junit)
+}
+
+val coverageRunProperty =
+    providers.gradleProperty("coverageRun").map { it.toBoolean() }.orElse(false)
+val requestedTasks = gradle.startParameter.taskNames
+val isCoverageRun = coverageRunProperty.get() || requestedTasks.any { taskName ->
+    taskName.contains("coverage", ignoreCase = true) || taskName.contains("jacoco", ignoreCase = true)
+}
+
+val coverageSourceInfo by lazy {
+    val mainSourceDir = projectDir.resolve("src/main/java")
+    if (!mainSourceDir.exists()) {
+        emptyList()
+    } else {
+        fileTree(mainSourceDir) {
+            include("**/*.kt")
+        }.files.map { file ->
+            val content = file.readText(Charsets.UTF_8)
+            val relativePath = file.relativeTo(mainSourceDir).invariantSeparatorsPath
+            val relativeDir = relativePath.substringBeforeLast("/", "")
+            CoverageSourceInfo(
+                relativeDir = relativeDir,
+                baseName = file.nameWithoutExtension,
+                skipCoverage = content.contains("@Composable") || content.contains("@Dao"),
+            )
+        }
+    }
+}
+
+fun CoverageSourceInfo.asClassPatterns(): List<String> {
+    val directorySegment =
+        if (relativeDir.isBlank()) "" else "${relativeDir.trimStart('/')}/"
+    return listOf(
+        "**/${directorySegment}${baseName}.class",
+        "**/${directorySegment}${baseName}\$*.class",
+        "**/${directorySegment}${baseName}Kt.class",
+        "**/${directorySegment}${baseName}Kt\$*.class",
+    )
+}
+
+val coverageIncludePatterns by lazy {
+    coverageSourceInfo
+        .filterNot(CoverageSourceInfo::skipCoverage)
+        .flatMap { it.asClassPatterns() }
+        .toSet()
+}
+
+val coverageSkipPatterns by lazy {
+    coverageSourceInfo
+        .filter(CoverageSourceInfo::skipCoverage)
+        .flatMap { it.asClassPatterns() }
+        .toSet()
+}
+
+val generatedClassExclusionPatterns by lazy {
+    setOf(
+        "**/R.class",
+        "**/R\$*.class",
+        "**/BuildConfig.*",
+        "**/Manifest*.*",
+        "**/*_Hilt*.class",
+        "**/*_Hilt*.*",
+        "**/*Hilt*Component*.*",
+        "**/*_Component*.*",
+        "**/*_Factory.class",
+        "**/*_Factory\$*.class",
+        "**/*_Impl*.class",
+        "**/*_Generated*.*",
+        "**/*_MembersInjector*.*",
+        "**/*_ProvideFactory*.*",
+    ) + coverageSkipPatterns
+}
+
+val androidJUnit4TestClasses by lazy {
+    val testSourceDir = projectDir.resolve("src/test/java")
+    if (!testSourceDir.exists()) {
+        emptySet<String>()
+    } else {
+        fileTree(testSourceDir) {
+            include("**/*.kt")
+        }.files.mapNotNull { file ->
+            val content = file.readText(Charsets.UTF_8)
+            if (!content.contains("AndroidJUnit4")) {
+                null
+            } else {
+                val packageName =
+                    Regex("""(?m)^\s*package\s+([^\s]+)""").find(content)?.groupValues?.get(1)
+                val className =
+                    Regex("""(?m)^\s*class\s+([A-Za-z0-9_]+)""").find(content)?.groupValues?.get(1)
+                if (packageName != null && className != null) {
+                    "$packageName.$className"
+                } else {
+                    null
+                }
+            }
+        }.toSet()
+    }
+}
+
+if (isCoverageRun) {
+    tasks.withType<Test>().configureEach {
+        val excludedClasses = androidJUnit4TestClasses
+        if (excludedClasses.isNotEmpty()) {
+            filter {
+                excludedClasses.forEach { className ->
+                    excludeTestsMatching(className)
+                }
+            }
+        }
+    }
+
+    tasks.withType<JacocoReport>().configureEach {
+        val includePatterns = coverageIncludePatterns
+        val excludePatterns = generatedClassExclusionPatterns
+
+        val updatedDirectories = classDirectories.files.map { directory ->
+            fileTree(directory) {
+                includePatterns.forEach { pattern -> include(pattern) }
+                excludePatterns.forEach { pattern -> exclude(pattern) }
+            }
+        }
+        classDirectories.setFrom(updatedDirectories)
+
+        val mainSourceDir = projectDir.resolve("src/main/java")
+        sourceDirectories.setFrom(files(mainSourceDir))
+        additionalSourceDirs.setFrom(files(mainSourceDir))
+    }
 }

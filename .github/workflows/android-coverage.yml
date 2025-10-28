@@ -1,4 +1,4 @@
-name: Android Unit Tests
+name: Android Coverage
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  normal-tests:
-    name: Normal Test Suite
+  coverage-tests:
+    name: Coverage (Exclusions Applied)
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +30,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Run unit tests (full suite)
+      - name: Run coverage task (Compose/DAO excluded)
         working-directory: Android
         run: |
           chmod +x gradlew
-          ./gradlew testDebugUnitTest
+          ./gradlew createDebugUnitTestCoverageReport -PcoverageRun=true

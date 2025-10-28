@@ -1,5 +1,8 @@
 # Currency Demo
 
+[![Normal Test Suite](https://github.com/trieulh-ict/Currency-Demo/actions/workflows/android-unit-tests.yml/badge.svg)](https://github.com/trieulh-ict/Currency-Demo/actions/workflows/android-unit-tests.yml?query=branch%3Amaster)
+[![Coverage (Exclusions Applied)](https://github.com/trieulh-ict/Currency-Demo/actions/workflows/android-coverage.yml/badge.svg)](https://github.com/trieulh-ict/Currency-Demo/actions/workflows/android-coverage.yml?query=branch%3Amaster)
+
 This repository contains an Android mobile app and a NestJS backend API for demonstrating a currency list.
 
 ## Table of Contents
