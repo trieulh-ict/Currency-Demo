@@ -25,7 +25,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
+        val localProperties = project.rootProject.file("local.properties")
+        if (localProperties.exists()) {
+            localProperties.inputStream().use(properties::load)
+        }
         // This is for testing only. Do not give default passphrase in production
         val sqlCipherPassphrase =
             properties.getProperty("sqlcipher.passphrase")?.takeIf { it.isNotBlank() }
@@ -125,6 +128,7 @@ dependencies {
     testImplementation(libs.robolectric)
     testImplementation(libs.androidx.ui.test.junit4)
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.junit.runner)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
